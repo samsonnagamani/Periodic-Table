@@ -7,48 +7,6 @@ import 'package:flutter/material.dart';
 
 import 'bloc/level_bloc.dart';
 
-// class LoadScreen extends StatefulWidget {
-//   @override
-//   State<StatefulWidget> createState() => LoadScreenState();
-// }
-
-// class LoadScreenState extends State<LoadScreen> {
-// //  List<mSetting> settings = [];
-// //
-// //  Future<String> getSettingsFromFile() async {
-// //    return await rootBundle.loadString('assets/settings.json');
-// //  }
-// //
-// //  Future getLevelState() async {
-// //    var jsonSettings = await getSettingsFromFile();
-// //    final jsonRes = json.decode(jsonSettings);
-// //
-// //    for (int i = 0; i < jsonRes.length; i++) {
-// //      mSetting setting = new mSetting.fromJson(jsonRes[i]);
-// //
-// //      settings.add(setting);
-// //    }
-// //    print(settings[0].level);
-// //
-// //    return settings;
-// //  }
-
-//   IconData arrow_right =
-//       IconData(0xe5df, fontFamily: 'MaterialIcons', matchTextDirection: true);
-
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final LevelBloc levelBloc = BlocProvider.of<LevelBloc>(context);
-
-//     return );
-//   }
-// }
-
 class LoadScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -60,7 +18,7 @@ class LoadScreen extends StatelessWidget {
 }
 
 class LoadPage extends StatelessWidget {
-  IconData arrow_right =
+  IconData arrowRight =
       IconData(0xe5df, fontFamily: 'MaterialIcons', matchTextDirection: true);
 
   @override
@@ -123,7 +81,7 @@ class LoadPage extends StatelessWidget {
                     ),
                     FloatingActionButton(
                       backgroundColor: Colors.green,
-                      child: Icon(arrow_right),
+                      child: Icon(arrowRight),
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
