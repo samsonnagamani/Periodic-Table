@@ -1,4 +1,4 @@
-# Perioidic Table
+# Periodic Table
 
 A new periodic table app built with flutter.
 
