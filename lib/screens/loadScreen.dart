@@ -1,40 +1,39 @@
+import 'package:PeriodicTable/components/SimpleAppBar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:periodicTable/bloc/bloc.dart';
-import 'package:periodicTable/main.dart';
-import 'package:periodicTable/models/Setting.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:PeriodicTable/bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
-import 'bloc/level_bloc.dart';
+import 'package:PeriodicTable/bloc/level_bloc.dart';
+import 'package:PeriodicTable/screens/gridScreen.dart';
 
 class LoadScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<LevelBloc>(
-      builder: (context) => LevelBloc(),
-      child: LoadPage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LevelBloc>(create: (context) => LevelBloc()),
+        BlocProvider<AnimationBloc>(create: (context) => AnimationBloc()),
+      ],
+      child: Builder(builder: (context) => LoadPage()),
     );
   }
 }
 
 class LoadPage extends StatelessWidget {
-  IconData arrowRight =
+  final IconData arrowRight =
       IconData(0xe5df, fontFamily: 'MaterialIcons', matchTextDirection: true);
 
   @override
   Widget build(BuildContext context) {
+    // ignore: close_sinks
     final LevelBloc levelBloc = BlocProvider.of<LevelBloc>(context);
 
     return MaterialApp(
         theme: ThemeData(
-          primarySwatch: Colors.green,
+          primarySwatch: Colors.deepPurple,
         ),
         home: Scaffold(
-            appBar: AppBar(
-                title: Container(
-              alignment: Alignment.center,
-              child: Text('Periodic Table'),
-            )),
+            appBar: SimpleAppBar(),
             body: BlocBuilder<LevelBloc, dynamic>(builder: (context, level) {
               return Container(
                 width: double.infinity,
@@ -55,11 +54,11 @@ class LoadPage extends StatelessWidget {
                         'A-Level',
                         style: TextStyle(color: Colors.white),
                       ),
-                      color:
-                          level == 'A-Level' ? Colors.green : Color(0xFF222222),
+                      color: level == 'A-Level'
+                          ? Colors.deepPurple
+                          : Color(0xFF222222),
                       onPressed: () {
-                        levelBloc.dispatch(LevelEvent.alevel);
-                        print(level);
+                        levelBloc.add(LevelEvents.alevel);
                       },
                     ),
                     Padding(
@@ -70,22 +69,23 @@ class LoadPage extends StatelessWidget {
                         'GCSE',
                         style: TextStyle(color: Colors.white),
                       ),
-                      color: level == 'GCSE' ? Colors.green : Color(0xFF222222),
+                      color: level == 'GCSE'
+                          ? Colors.deepPurple
+                          : Color(0xFF222222),
                       onPressed: () {
-                        levelBloc.dispatch(LevelEvent.gcse);
-                        print(level);
+                        levelBloc.add(LevelEvents.gcse);
                       },
                     ),
                     Padding(
                       padding: EdgeInsets.all(20),
                     ),
                     FloatingActionButton(
-                      backgroundColor: Colors.green,
+                      backgroundColor: Colors.deepPurple,
                       child: Icon(arrowRight),
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HomePage(
+                            builder: (context) => GridScreen(
                                   title: 'Periodic Table',
                                   level: level,
                                 )),

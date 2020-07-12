@@ -1,20 +1,21 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import './bloc.dart';
 
-class LevelBloc extends Bloc<LevelEvent, dynamic> {
+part 'level_event.dart';
+
+class LevelBloc extends Bloc<LevelEvents, dynamic> {
   @override
   get initialState => '';
 
   @override
   Stream mapEventToState(
-    LevelEvent event,
+    LevelEvents event,
   ) async* {
     switch (event) {
-      case LevelEvent.alevel:
+      case LevelEvents.alevel:
         yield 'A-Level';
         break;
-      case LevelEvent.gcse:
+      case LevelEvents.gcse:
         yield 'GCSE';
         break;
     }

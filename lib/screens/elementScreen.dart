@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'models/Element.dart';
 import 'package:simple_animations/simple_animations.dart';
-import 'models/grid.dart';
+
+import 'package:PeriodicTable/models/grid.dart';
+import 'package:PeriodicTable/models/Element.dart';
 
 elementScreen(int x, int y, List<mElement> elements, String level) {
   for (var el in elements) {
@@ -186,133 +187,7 @@ class ElementPageContent extends StatelessWidget {
     return Ink(
       color: Color(0xFF111111),
       child: ListView(
-        children: level == 'GCSE'
-            ? <Widget>[
-                ListTile(
-                  title: Text(
-                    'Overview',
-                    style: TextStyle(color: Colors.white, fontSize: 20.0),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Name',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    el.name,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Atomic Number',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    el.number.toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Atomic Mass',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    el.atomicMass.toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Phase',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    el.phase,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Ion Charge',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    mElement.getIonicChargeAsString(el),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ]
-            : <Widget>[
-                ListTile(
-                  title: Text(
-                    'Overview',
-                    style: TextStyle(color: Colors.white, fontSize: 20.0),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Name',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    el.name,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Discovered By',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    el.discoveredBy,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Atomic Number',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    el.number.toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Atomic Mass',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    el.atomicMass.toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Phase',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    el.phase,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Ion Charge',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    mElement.getIonicChargeAsString(el),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
+        children: level == 'GCSE' ? gcseData(el) : alevelData(el),
         scrollDirection: Axis.vertical,
       ),
     );
@@ -336,6 +211,40 @@ Widget textBox(String text, double height, double width, Alignment alignment,
         style: TextStyle(color: Colors.white),
         textAlign: TextAlign.center,
       )),
+    ),
+  );
+}
+
+List<Widget> gcseData(mElement el) {
+  return <Widget>[
+    elementInfoTile('Overview'),
+    elementInfoTile('Name', el.name),
+    elementInfoTile('Atomic Number', el.number.toString()),
+    elementInfoTile('Atomic Mass', el.atomicMass.toString()),
+    elementInfoTile('Ion Charge', mElement.getIonicChargeAsString(el)),
+  ];
+}
+
+List<Widget> alevelData(dynamic el) {
+  return <Widget>[
+    elementInfoTile('Overview'),
+    elementInfoTile('Name', el.name),
+    elementInfoTile('Atomic Number', el.number.toString()),
+    elementInfoTile('Atomic Mass', el.atomicMass.toString()),
+    elementInfoTile('Ion Charge', mElement.getIonicChargeAsString(el)),
+    elementInfoTile('Electron Configuration', el.electronConfig)
+  ];
+}
+
+Widget elementInfoTile(String name, [String value = ""]) {
+  return ListTile(
+    title: Text(
+      name,
+      style: TextStyle(color: Colors.amber),
+    ),
+    subtitle: Text(
+      value,
+      style: TextStyle(color: Colors.white),
     ),
   );
 }

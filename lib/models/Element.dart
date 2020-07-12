@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'grid.dart';
+import 'package:PeriodicTable/models/grid.dart';
 
+// ignore: camel_case_types
 class mElement {
   final String name;
   final String appearance;

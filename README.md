@@ -1,19 +1,28 @@
-# Perioidic Table
+# Periodic Table
 
 A new periodic table app built with flutter.
 
+## Features & Implementations
+- Element information is different for A level and GCSE options, this information is 
+  based on the data sheets released by the AQA exam board.
+
 ## Skills & Methods Used
-- JSON formating in the dart programming language
+- JSON formatting in the dart programming language
 - Capable of mapping objects to a grid view
 - Using animations
 - The use of 3rd party packages/modules
-- Organising the project folders and code
+- Organizing the project folders and code
 - Creating models to store data
-- Asyncronous code
-  
+- Asynchronous code
+- State management implementation | BLoC pattern
+
+## TODO
+- Clean/Fix AnimationBloc usage
+- Add search page functionality 
 
 ## Downloads
 
+- *Notice*: For the most up to date version build the APK from source code
 - [Android: Google Play Store](https://play.google.com/store/apps/details?id=net.samsonnagamani.periodic_table)
 - IOS | Not Available
 
