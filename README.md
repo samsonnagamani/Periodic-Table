@@ -18,7 +18,6 @@ A new periodic table app built with flutter.
 
 ## TODO
 - Clean/Fix AnimationBloc usage
-- Add search page functionality 
 
 ## Downloads
 
