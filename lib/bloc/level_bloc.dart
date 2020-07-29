@@ -3,12 +3,11 @@ import 'package:bloc/bloc.dart';
 
 part 'level_event.dart';
 
-class LevelBloc extends Bloc<LevelEvents, dynamic> {
-  @override
-  get initialState => '';
+class LevelBloc extends Bloc<LevelEvents, String> {
+  LevelBloc() : super('A-Level');
 
   @override
-  Stream mapEventToState(
+  Stream<String> mapEventToState(
     LevelEvents event,
   ) async* {
     switch (event) {

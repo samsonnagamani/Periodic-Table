@@ -6,14 +6,14 @@ import 'package:PeriodicTable/models/grid.dart';
 class mElement {
   final String name;
   final String appearance;
-  final atomicMass;
-  final boil;
+  final double atomicMass;
+  final double boil;
   final String category;
   final String color;
-  final density;
+  final double density;
   final String discoveredBy;
-  final melt;
-  final molarHeat;
+  final double melt;
+  final double molarHeat;
   final String namedBy;
   final int number;
   final int period;
@@ -24,9 +24,11 @@ class mElement {
   final int ypos;
   final List shells;
   final String electronConfig;
-  final electronAffinity;
-  final electronegativityPauling;
+  final String electronConfigSemantic;
+  final double electronAffinity;
+  final double electronegativityPauling;
   final List ionizationEnergies;
+  final String image;
 
   mElement({
     this.name,
@@ -39,6 +41,7 @@ class mElement {
     this.discoveredBy,
     this.electronAffinity,
     this.electronConfig,
+    this.electronConfigSemantic,
     this.electronegativityPauling,
     this.ionizationEnergies,
     this.melt,
@@ -52,33 +55,37 @@ class mElement {
     this.symbol,
     this.xpos,
     this.ypos,
+    this.image,
   });
 
   factory mElement.fromJson(Map<String, dynamic> json) {
     return mElement(
-      name: json["name"],
-      appearance: json["appearance"],
-      atomicMass: json["atomic_mass"],
-      boil: json["boil"],
-      category: json["category"],
-      color: json["color"],
-      density: json["density"],
-      discoveredBy: json["discovered_by"],
-      electronAffinity: json["electron_affinity"],
-      electronConfig: json["electron_configuration"],
-      electronegativityPauling: json["electronegativity_pauling"],
-      ionizationEnergies: parseList(json["ionization_energies"]),
-      melt: json["melt"],
-      molarHeat: json["molar_heat"],
-      namedBy: json["named_by"],
-      number: json["number"],
-      period: json["period"],
-      phase: json["phase"],
-      shells: parseList(json["shells"]),
-      summary: json["summary"],
-      symbol: json["symbol"],
-      xpos: json["xpos"],
-      ypos: json["ypos"],
+      name: json['name'],
+      appearance: json['appearance'],
+      atomicMass: double.parse(json['atomic_mass'].toString()),
+      boil: double.tryParse(json['boil'].toString()),
+      category: json['category'],
+      color: json['color'],
+      density: double.tryParse(json['density'].toString()),
+      discoveredBy: json['discovered_by'],
+      electronAffinity: double.tryParse(json['electron_affinity'].toString()),
+      electronConfig: json['electron_configuration'],
+      electronConfigSemantic: json['electron_config_semantic'],
+      electronegativityPauling:
+          double.tryParse(json['electronegativity_pauling'].toString()),
+      ionizationEnergies: parseList(json['ionization_energies']),
+      melt: double.tryParse(json['melt'].toString()),
+      molarHeat: json['molar_heat'],
+      namedBy: json['named_by'],
+      number: json['number'],
+      period: json['period'],
+      phase: json['phase'],
+      shells: parseList(json['shells']),
+      summary: json['summary'],
+      symbol: json['symbol'],
+      xpos: json['xpos'],
+      ypos: json['ypos'],
+      image: json['source'],
     );
   }
 
@@ -94,82 +101,87 @@ class mElement {
     return elementByNum;
   }
 
-  static Color getColorByElCat(el, List<mElement> elements) {
+  static Color getColorByElCat(mElement el, [String category]) {
     Color colorByElCat;
+    String cat;
 
-    if (elements.contains(el)) {
-      switch (el.category) {
-        case 'diatomic nonmetal':
-          {
-            colorByElCat = Color(0xDAFFFF00);
-          }
-          break;
+    if (el == null) {
+      cat = category;
+    } else {
+      cat = el.category;
+    }
 
-        case 'alkali metal':
-          {
-            colorByElCat = Color(0xFFFF0000);
-          }
-          break;
+    switch (cat) {
+      case 'diatomic nonmetal':
+        {
+          colorByElCat = Color(0xDAFFFF00);
+        }
+        break;
 
-        case 'noble gas':
-          {
-            colorByElCat = Color(0xFF800080);
-          }
-          break;
+      case 'alkali metal':
+        {
+          colorByElCat = Color(0xFFFF0000);
+        }
+        break;
 
-        case 'alkaline earth metal':
-          {
-            colorByElCat = Color(0xFF4444E5);
-          }
-          break;
+      case 'noble gas':
+        {
+          colorByElCat = Color(0xFF800080);
+        }
+        break;
 
-        case 'transition metal':
-          {
-            colorByElCat = Color(0xFFFFA500);
-          }
-          break;
+      case 'alkaline earth metal':
+        {
+          colorByElCat = Color(0xFF4444E5);
+        }
+        break;
 
-        case 'post-transition metal':
-          {
-            colorByElCat = Color(0xFF4444E5);
-          }
-          break;
+      case 'transition metal':
+        {
+          colorByElCat = Color(0xFFFFA500);
+        }
+        break;
 
-        case 'metalloid':
-          {
-            colorByElCat = Color(0xFFFF0000);
-          }
-          break;
+      case 'post-transition metal':
+        {
+          colorByElCat = Color(0xFF4444E5);
+        }
+        break;
 
-        case 'polyatomic nonmetal':
-          {
-            colorByElCat = Color(0xDDFFFF00);
-          }
-          break;
+      case 'metalloid':
+        {
+          colorByElCat = Color(0xFFFF0000);
+        }
+        break;
 
-        case 'halogen':
-          {
-            colorByElCat = Color(0xFF008000);
-          }
-          break;
+      case 'polyatomic nonmetal':
+        {
+          colorByElCat = Color(0xDDFFFF00);
+        }
+        break;
 
-        case 'lathanoid':
-          {
-            colorByElCat = Color(0xFFFF5500);
-          }
-          break;
+      case 'halogen':
+        {
+          colorByElCat = Color(0xFF008000);
+        }
+        break;
 
-        case 'actinoid':
-          {
-            colorByElCat = Color(0xFF008000);
-          }
-          break;
+      case 'lathanoid':
+        {
+          colorByElCat = Color(0xFFFF5500);
+        }
+        break;
 
-        default:
-          {
-            colorByElCat = Color(0xFFD4D4D4);
-          }
-      }
+      case 'actinoid':
+        {
+          colorByElCat = Color(0xFF008000);
+        }
+        break;
+
+      default:
+        {
+          colorByElCat = Color(0xFFD4D4D4);
+        }
     }
 
     return colorByElCat;
@@ -188,7 +200,7 @@ class mElement {
     return groupNum;
   }
 
-  static String getIonicChargeAsString(el) {
+  static String getIonicChargeAsString(mElement el) {
     int groupNum = getGroupByElement(el);
     String ionicCharge;
 
@@ -254,6 +266,38 @@ class mElement {
 
     return ionicCharge;
   }
+
+  // static String getAbbreviatedElectronConfig(
+  //     List<mElement> elements, mElement el) {
+  //   List<String> startElectronConfigSymbol = [];
+  //   List<String> startElectronConfig = [];
+  //   String startElectronConfigString = '';
+  //   String endElectronConfigString = '';
+  //   String electronConfig = '';
+
+  //   elements.forEach((element) {
+  //     // print(el.electronConfig.startsWith(element.electronConfig));
+  //     if (el.electronConfig.startsWith(element.electronConfig)) {
+  //       startElectronConfigSymbol.add(element.symbol);
+  //       startElectronConfig.add(element.electronConfig);
+  //     } else {
+  //       electronConfig = el.electronConfig;
+  //     }
+  //   });
+
+  //   startElectronConfigString = startElectronConfigSymbol
+  //       .elementAt(startElectronConfigSymbol.length - 2);
+
+  //   endElectronConfigString = el.electronConfig
+  //       .split(startElectronConfig.elementAt(startElectronConfig.length - 2))
+  //       .last;
+
+  //   electronConfig = '[$startElectronConfigString]$endElectronConfigString';
+  //   print(startElectronConfigSymbol);
+  //   print(electronConfig);
+
+  //   return electronConfig;
+  // }
 
   static List parseList(listJson) {
     List list = new List.from(listJson);

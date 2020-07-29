@@ -5,8 +5,7 @@ import 'package:bloc/bloc.dart';
 part 'animation_event.dart';
 
 class AnimationBloc extends Bloc<AnimationEvents, String> {
-  @override
-  get initialState => 'idle';
+  AnimationBloc() : super('idle');
 
   @override
   Stream<String> mapEventToState(

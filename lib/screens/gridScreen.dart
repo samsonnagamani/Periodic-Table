@@ -1,4 +1,6 @@
+import 'package:PeriodicTable/bloc/bloc.dart';
 import 'package:PeriodicTable/components/SimpleAppBar.dart';
+import 'package:PeriodicTable/screens/searchScreen.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -8,6 +10,7 @@ import 'package:PeriodicTable/models/Element.dart';
 import 'package:PeriodicTable/models/grid.dart';
 import 'package:PeriodicTable/screens/elementScreen.dart';
 import 'package:PeriodicTable/components/Nav.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GridScreen extends StatefulWidget {
   GridScreen({Key key, this.title, this.level}) : super(key: key);
@@ -19,28 +22,6 @@ class GridScreen extends StatefulWidget {
 }
 
 class _GridScreenState extends State<GridScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SimpleAppBar(),
-      body: FutureBuilder(
-        future: loadElements(),
-        builder: (context, snapshot) {
-          return snapshot.connectionState == ConnectionState.done
-              ? buildGrid()
-              : Center(
-                  child: FittedBox(
-                    alignment: Alignment.center,
-                    fit: BoxFit.fill,
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-        },
-      ),
-      floatingActionButton: Nav(),
-    );
-  }
-
   List<mElement> elements = [];
 
   Future<String> loadElementsFromAssets() async {
@@ -54,10 +35,43 @@ class _GridScreenState extends State<GridScreen> {
     for (int i = 0; i < jsonRes.length; i++) {
       mElement element = new mElement.fromJson(jsonRes[i]);
 
+      if (elements.length == jsonRes.length) {
+        return;
+      }
       elements.add(element);
     }
+  }
 
-    return elements;
+  @override
+  Widget build(BuildContext context) {
+    // ignore: close_sinks
+    AnimationBloc animationBloc = BlocProvider.of<AnimationBloc>(context);
+
+    return BlocListener<AnimationBloc, String>(
+      listener: (context, state) {
+        animationBloc.add(AnimationEvents.Idle);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => SearchScreen()));
+      },
+      child: Scaffold(
+        appBar: SimpleAppBar(),
+        body: FutureBuilder(
+          future: loadElements(),
+          builder: (context, snapshot) {
+            return snapshot.connectionState == ConnectionState.done
+                ? buildGrid()
+                : Center(
+                    child: FittedBox(
+                      alignment: Alignment.center,
+                      fit: BoxFit.fill,
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+          },
+        ),
+        floatingActionButton: Nav(),
+      ),
+    );
   }
 
   Widget buildGrid() {
@@ -130,14 +144,16 @@ class _GridScreenState extends State<GridScreen> {
     Orientation orientation = MediaQuery.of(context).orientation;
 
     Widget tile;
+    mElement element;
 
-    for (var el in elements) {
+    for (mElement el in elements) {
       if (grid[x][y] == el.number.toString()) {
+        element = el;
         tile = Container(
           decoration: BoxDecoration(
               border: Border(
                   bottom: BorderSide(
-            color: mElement.getColorByElCat(el, elements),
+            color: mElement.getColorByElCat(el),
             width: 1,
           ))),
           child: Stack(
@@ -206,7 +222,7 @@ class _GridScreenState extends State<GridScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        elementScreen(x, y, elements, widget.level))),
+                        ElementScreen(element: element, level: widget.level))),
         child: GridTile(
           child: Container(
             decoration: BoxDecoration(

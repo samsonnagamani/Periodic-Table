@@ -27,8 +27,6 @@ class AnimationControls extends FlareControls {
   void onCompleted(String name) {
     super.onCompleted(name);
     if (name == 'search') {
-      print(name);
-      // _isSearchAnimationCompleted = true;
       animationBloc.add(AnimationEvents.Completed);
     }
 

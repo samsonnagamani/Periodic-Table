@@ -1,9 +1,6 @@
-import 'package:PeriodicTable/bloc/bloc.dart';
-import 'package:PeriodicTable/screens/searchScreen.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:PeriodicTable/controllers/flare_controller.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum AnimationToPlay {
   Open,
@@ -34,47 +31,41 @@ class _NavState extends State<Nav> {
     // Set build context variable in AnimationControls instance
     animationControls.setContext(context);
 
-    return BlocListener<AnimationBloc, String>(
-      listener: (context, state) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SearchScreen()));
-      },
-      child: Container(
-        height: AnimationHeight,
-        width: AnimationWidth,
-        child: GestureDetector(
-          onTapUp: (tapInfo) {
-            var localTouchPosition = (context.findRenderObject() as RenderBox)
-                .globalToLocal(tapInfo.globalPosition);
+    return Container(
+      height: AnimationHeight,
+      width: AnimationWidth,
+      child: GestureDetector(
+        onTapUp: (tapInfo) {
+          var localTouchPosition = (context.findRenderObject() as RenderBox)
+              .globalToLocal(tapInfo.globalPosition);
 
-            var topHalfTouched = localTouchPosition.dy < AnimationHeight / 2;
-            var bottomHalfTouched = localTouchPosition.dy > AnimationHeight / 2;
+          var topHalfTouched = localTouchPosition.dy < AnimationHeight / 2;
+          var bottomHalfTouched = localTouchPosition.dy > AnimationHeight / 2;
 
-            if (topHalfTouched) {
-              var isHiddenAnimation = _isHiddenAnimation(
-                  AnimationToPlay.Search, _lastPlayedAnimation);
-              _setAnimationToPlay(AnimationToPlay.Search);
+          if (topHalfTouched) {
+            var isHiddenAnimation = _isHiddenAnimation(
+                AnimationToPlay.Search, _lastPlayedAnimation);
+            _setAnimationToPlay(AnimationToPlay.Search);
 
-              if (isHiddenAnimation) return;
-            } else if (bottomHalfTouched) {
-              if (isOpen) {
-                _setAnimationToPlay(AnimationToPlay.Close);
-              } else {
-                _setAnimationToPlay(AnimationToPlay.Open);
-              }
+            if (isHiddenAnimation) return;
+          } else if (bottomHalfTouched) {
+            if (isOpen) {
+              _setAnimationToPlay(AnimationToPlay.Close);
+            } else {
+              _setAnimationToPlay(AnimationToPlay.Open);
             }
+          }
 
-            setState(() {
-              isOpen = !isOpen;
-            });
-          },
-          child: FlareActor(
-            'assets/Nav.flr',
-            alignment: Alignment.bottomCenter,
-            fit: BoxFit.contain,
-            controller: animationControls,
-            animation: _getAnimationName(_animationToPlay),
-          ),
+          setState(() {
+            isOpen = !isOpen;
+          });
+        },
+        child: FlareActor(
+          'assets/Nav.flr',
+          alignment: Alignment.bottomCenter,
+          fit: BoxFit.contain,
+          controller: animationControls,
+          animation: _getAnimationName(_animationToPlay),
         ),
       ),
     );
